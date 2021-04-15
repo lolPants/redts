@@ -3,12 +3,14 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes'
 import Koa from 'koa'
 import koaBody from 'koa-body'
 import shlex from 'shlex'
+import { auth } from './auth.js'
 import { isScript, resolveScript, runScript } from './edts.js'
 import { middleware as logger } from './logger.js'
 
 const app = new Koa()
 const router = new Router()
 router.use(logger)
+router.use(auth)
 
 const body = koaBody({
   json: false,
