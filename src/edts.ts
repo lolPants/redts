@@ -34,7 +34,7 @@ export const runScript: (
 ) => Promise<ScriptReturn> = async (script, args) => {
   try {
     const { stderr, all, exitCode } = await execa(
-      'python',
+      'python3',
       [`${script}.py`, ...args],
       {
         cwd: '../edts',
