@@ -1,4 +1,4 @@
-import { registerInt, registerString } from './register.js'
+import { registerBool, registerInt, registerString } from './register.js'
 
 // #region Globals
 const NODE_ENV = registerString('NODE_ENV')
@@ -8,4 +8,5 @@ export const IS_DEV = !IS_PROD
 
 // #region Application
 export const PORT = registerInt('PORT') ?? 3000
+export const ENABLE_LOGGING = registerBool('ENABLE_LOGGING') ?? false
 // #endregion

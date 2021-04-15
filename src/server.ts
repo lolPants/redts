@@ -3,9 +3,11 @@ import Koa from 'koa'
 import koaBody from 'koa-body'
 import shlex from 'shlex'
 import { isScript, resolveScript, runScript } from './edts.js'
+import { middleware as logger } from './logger.js'
 
 const app = new Koa()
 const router = new Router()
+router.use(logger)
 
 const body = koaBody({
   json: false,

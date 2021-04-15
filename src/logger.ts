@@ -1,0 +1,38 @@
+import { createConsoleSink, createField, createLogger } from '@lolpants/jogger'
+import type { Middleware } from 'koa'
+import { ENABLE_LOGGING, IS_DEV } from './env/index.js'
+
+const wrapLogger = (name: string) =>
+  createLogger({
+    name,
+    sink: createConsoleSink(IS_DEV),
+  })
+
+const httpLogger = wrapLogger('http')
+export const logger = wrapLogger('app')
+
+const httpVersionField = createField('httpVersion')
+const methodField = createField('method')
+const urlField = createField('url')
+const statusField = createField('status')
+const sizeField = createField('size')
+const uaField = createField('userAgent')
+const referrerField = createField('referrer')
+
+export const middleware: Middleware = async (ctx, next) => {
+  await next()
+
+  if (IS_DEV === true || ENABLE_LOGGING === true) {
+    httpLogger.info(
+      httpVersionField(
+        `${ctx.req.httpVersionMajor}.${ctx.req.httpVersionMinor}`
+      ),
+      methodField(ctx.method),
+      urlField(ctx.url),
+      statusField(ctx.status),
+      sizeField(ctx.status === 204 ? 0 : ctx.response.length ?? -1),
+      uaField(ctx.headers['user-agent'] ?? '-'),
+      referrerField(ctx.headers.referer ?? ctx.headers.referrer ?? '-')
+    )
+  }
+}
