@@ -63,6 +63,10 @@ export const middleware: Middleware = async (ctx, next) => {
       if (username) extraFields.push(field('username', username))
     }
 
+    if (typeof ctx.request.body === 'string') {
+      extraFields.push(field('query', ctx.request.body))
+    }
+
     httpLogger.info(...fields, ...extraFields)
   }
 }
