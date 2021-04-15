@@ -1,3 +1,4 @@
+import { PORT } from './env/index.js'
 import { app } from './server.js'
 
-app.listen(3000)
+app.listen(PORT)
