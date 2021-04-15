@@ -14,7 +14,7 @@ func (c *Config) filePath() (string, error) {
 		return "", err
 	}
 
-	return path.Join(home, ".config", "edtss.toml"), nil
+	return path.Join(home, ".config", "redts.toml"), nil
 }
 
 func (c *Config) Save() error {
