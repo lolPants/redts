@@ -14,7 +14,7 @@ export const auth: Middleware = async (ctx, next) => {
     return
   }
 
-  const [username, password] = authorization.split(':')
+  const [username, password] = authorization.replace(/^Bearer /, '').split(':')
   if (username === '' || password === '') {
     ctx.status = StatusCodes.UNAUTHORIZED
     ctx.body = ReasonPhrases.UNAUTHORIZED
