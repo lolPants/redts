@@ -1,8 +1,8 @@
 import { field } from '@lolpants/jogger'
 import execa from 'execa'
-import fs from 'fs'
-import type { PathLike } from 'fs'
-import { access } from 'fs/promises'
+import fs from 'node:fs'
+import type { PathLike } from 'node:fs'
+import { access } from 'node:fs/promises'
 import { errorField, logger } from './logger.js'
 
 export const exists = async (path: PathLike) => {
