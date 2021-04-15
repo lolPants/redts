@@ -1,0 +1,8 @@
+{
+  "name": "edtss",
+  "version": "0.1.0",
+  "repository": "git@github.com:lolPants/edtss.git",
+  "author": "Jack Baron <jackmbaron@gmail.com>",
+  "license": "MIT",
+  "private": true
+}
