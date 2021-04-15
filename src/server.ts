@@ -37,8 +37,17 @@ router.get('/:script', body, async ctx => {
   }
 
   const args = shlex.split(ctx.request.body)
-  const { success, stdout } = await runScript(script, args)
-  if (success === false) ctx.status = StatusCodes.BAD_REQUEST
+  const { success, stdout, timeout } = await runScript(script, args)
+  if (success === false) {
+    if (timeout) {
+      ctx.status = StatusCodes.INTERNAL_SERVER_ERROR
+      ctx.body = 'Execution Timeout'
+
+      return
+    }
+
+    ctx.status = StatusCodes.BAD_REQUEST
+  }
 
   ctx.body = stdout
 })

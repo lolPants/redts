@@ -1,4 +1,5 @@
 import execa from 'execa'
+import { SCRIPT_TIMEOUT } from './env/index.js'
 import { isExecaError } from './execa.js'
 
 // #region Allowed Scripts
@@ -25,6 +26,7 @@ export function isScript(string: string): string is AllowedScript {
 // #region Script Runner
 interface ScriptReturn {
   success: boolean
+  timeout: boolean
   stdout: string
 }
 
@@ -33,22 +35,28 @@ export const runScript: (
   args: readonly string[]
 ) => Promise<ScriptReturn> = async (script, args) => {
   try {
-    const { stderr, all, exitCode } = await execa(
-      'python3',
-      [`./edts/${script}.py`, ...args],
-      {
-        all: true,
-      }
-    )
+    const job = execa('python3', [`./edts/${script}.py`, ...args], {
+      all: true,
+    })
+
+    const timeout = setTimeout(() => {
+      job.kill('SIGKILL')
+    }, SCRIPT_TIMEOUT * 1000)
+
+    const { stderr, all, exitCode } = await job
+    clearTimeout(timeout)
 
     const error = stderr !== '' || exitCode !== 0
     const success = !error
 
-    return { success, stdout: all ?? '' }
+    return { success, stdout: all ?? '', timeout: false }
   } catch (error: unknown) {
     if (isExecaError(error)) {
-      console.log(error)
-      return { success: false, stdout: error.all ?? '' }
+      return {
+        success: false,
+        stdout: error.all ?? '',
+        timeout: error.killed || error.isCanceled,
+      }
     }
 
     throw error
