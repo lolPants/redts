@@ -3,7 +3,7 @@ import execa from 'execa'
 import fs from 'node:fs'
 import type { PathLike } from 'node:fs'
 import { access } from 'node:fs/promises'
-import { errorField, logger } from './logger.js'
+import { errorField, wrapLogger } from './logger.js'
 
 export const exists = async (path: PathLike) => {
   try {
@@ -16,7 +16,18 @@ export const exists = async (path: PathLike) => {
   }
 }
 
-const ctxField = field('ctx', 'update-db')
+const logger = wrapLogger('updater')
+
+const logRX = /^\[\d{2}:\d{2}:\d{2}\.\d{3}] \[update *] \[ *INFO] (.+)$/
+const parseLogEntry = (line: string) => {
+  const trimmed = line.trim()
+  const entry = logRX.exec(trimmed)
+  if (entry !== null) {
+    return entry[1]
+  }
+
+  return trimmed
+}
 
 export const syncDB = async (boot: boolean) => {
   if (boot) {
@@ -31,21 +42,19 @@ export const syncDB = async (boot: boolean) => {
     })
 
     job.all?.on('data', (buf: Buffer) => {
-      const string = buf.toString('utf-8').trim()
-      logger.info(
-        ctxField,
-        field('status', 'updating'),
-        field('content', string)
-      )
+      const string = buf.toString('utf-8')
+      const message = parseLogEntry(string)
+
+      logger.info(field('status', 'updating'), field('message', message))
     })
 
     await job
-    logger.info(ctxField, field('status', 'complete'))
+    logger.info(field('status', 'complete'))
   } catch (error: unknown) {
     if (error instanceof Error) {
-      logger.error(ctxField, errorField(error))
+      logger.error(errorField(error))
     } else {
-      logger.error(ctxField, field('status', 'unknown error'))
+      logger.error(field('status', 'unknown error'))
     }
   }
 }

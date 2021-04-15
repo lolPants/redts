@@ -8,7 +8,7 @@ import type { IField } from '@lolpants/jogger'
 import type { Middleware } from 'koa'
 import { ENABLE_LOGGING, IS_DEV } from './env/index.js'
 
-const wrapLogger = (name: string) =>
+export const wrapLogger = (name: string) =>
   createLogger({
     name,
     sink: createConsoleSink(IS_DEV),
