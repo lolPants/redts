@@ -35,9 +35,8 @@ export const runScript: (
   try {
     const { stderr, all, exitCode } = await execa(
       'python3',
-      [`${script}.py`, ...args],
+      [`./edts/${script}.py`, ...args],
       {
-        cwd: '../edts',
         all: true,
       }
     )
@@ -48,6 +47,7 @@ export const runScript: (
     return { success, stdout: all ?? '' }
   } catch (error: unknown) {
     if (isExecaError(error)) {
+      console.log(error)
       return { success: false, stdout: error.all ?? '' }
     }
 

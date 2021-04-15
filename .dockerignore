@@ -9,3 +9,7 @@ logs
 *.log
 !*.env.example
 *.env
+
+# Docker
+Dockerfile
+.dockerignore
