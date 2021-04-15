@@ -1,4 +1,10 @@
-import { createConsoleSink, createField, createLogger } from '@lolpants/jogger'
+import {
+  createConsoleSink,
+  createField,
+  createLogger,
+  field,
+} from '@lolpants/jogger'
+import type { IField } from '@lolpants/jogger'
 import type { Middleware } from 'koa'
 import { ENABLE_LOGGING, IS_DEV } from './env/index.js'
 
@@ -10,6 +16,18 @@ const wrapLogger = (name: string) =>
 
 const httpLogger = wrapLogger('http')
 export const logger = wrapLogger('app')
+
+export const errorField: <T extends Error>(
+  error: T
+) => Readonly<IField> = error => {
+  const array: Array<Readonly<IField>> = [
+    field('type', error.name),
+    field('message', error.message),
+  ]
+
+  if (error.stack) array.push(field('stack', error.stack))
+  return field('error', array[0], ...array.slice(1))
+}
 
 const httpVersionField = createField('httpVersion')
 const methodField = createField('method')
