@@ -1,11 +1,2 @@
-# EDTS Application
-edts
-
-# Node Server
-node_modules
+.vs
 .vscode
-build
-logs
-*.log
-!*.env.example
-*.env

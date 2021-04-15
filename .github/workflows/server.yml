@@ -1,5 +1,13 @@
-name: Docker Build
-on: [push, pull_request]
+name: Server Docker Build
+on:
+  push:
+    paths-ignore:
+      - 'cli'
+      - 'cli/**'
+      - 'README.md'
+      - 'LICENSE'
+      - 'docker-compose.yml'
+      - '.github/workflows/cli.yml'
 
 jobs:
   build:
@@ -30,10 +38,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          key: server-${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            server-${{ runner.os }}-buildx-
       - name: Build Docker Image
+        working-directory: ./server
         run: |
           docker buildx build \
             --cache-from "type=local,src=/tmp/.buildx-cache" \
