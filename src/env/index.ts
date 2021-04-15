@@ -9,4 +9,5 @@ export const IS_DEV = !IS_PROD
 // #region Application
 export const PORT = registerInt('PORT') ?? 3000
 export const ENABLE_LOGGING = registerBool('ENABLE_LOGGING') ?? false
+export const HMAC_SECRET = registerString('HMAC_SECRET')
 // #endregion

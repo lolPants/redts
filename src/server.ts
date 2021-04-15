@@ -1,4 +1,5 @@
 import Router from '@koa/router'
+import { ReasonPhrases, StatusCodes } from 'http-status-codes'
 import Koa from 'koa'
 import koaBody from 'koa-body'
 import shlex from 'shlex'
@@ -20,18 +21,22 @@ const body = koaBody({
 router.get('/:script', body, async ctx => {
   const script = resolveScript(ctx.params.script)
   if (!isScript(script)) {
-    ctx.status = 404
+    ctx.status = StatusCodes.NOT_FOUND
+    ctx.body = ReasonPhrases.NOT_FOUND
+
     return
   }
 
   if (typeof ctx.request.body !== 'string') {
-    ctx.status = 400
+    ctx.status = StatusCodes.BAD_REQUEST
+    ctx.body = ReasonPhrases.BAD_REQUEST
+
     return
   }
 
   const args = shlex.split(ctx.request.body)
   const { success, stdout } = await runScript(script, args)
-  if (success === false) ctx.status = 400
+  if (success === false) ctx.status = StatusCodes.BAD_REQUEST
 
   ctx.body = stdout
 })
