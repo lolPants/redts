@@ -16,12 +16,7 @@ var (
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			key := strings.ToLower(args[0])
-			cfg := config.Config{}
-			err := cfg.Load()
-			if err != nil {
-				fmt.Fprintln(os.Stderr, "failed to read config")
-				os.Exit(1)
-			}
+			cfg := config.Load()
 
 			if key == "url" {
 				if cfg.URL == "" {
