@@ -40,7 +40,7 @@ jobs:
           VERSION=`git rev-parse --short HEAD`
           TAG=`git tag --points-at HEAD`
 
-          BUILD_FLAGS="-s -w -X ${GO_PKG}/src/cmd.sha1ver=${VERSION} -X ${GO_PKG}/src/cmd.gitTag=${TAG}"
+          BUILD_FLAGS="-s -w -X ${GO_PKG}/src/pkg/version.sha1ver=${VERSION} -X ${GO_PKG}/src/pkg/version.gitTag=${TAG}"
           BUILD_ARGS="-v -trimpath -ldflags=\"${BUILD_FLAGS}\""
 
           echo ::set-output name=build_args::${BUILD_ARGS}
