@@ -20,7 +20,7 @@ const body = koaBody({
   parsedMethods: ['GET'],
 })
 
-router.get('/:script', body, async ctx => {
+router.get('/api/:script', body, async ctx => {
   const script = resolveScript(ctx.params.script)
   if (!isScript(script)) {
     ctx.status = StatusCodes.NOT_FOUND
