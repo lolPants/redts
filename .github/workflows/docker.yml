@@ -10,7 +10,7 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
-          IMAGE_NAME=edtss
+          IMAGE_NAME=redts
 
           DOCKER_USER=`echo ${{ github.repository }} | cut -d "/" -f 1 | tr '[:upper:]' '[:lower:]'`
           DOCKER_REPO=`echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]'`

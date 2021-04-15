@@ -1,9 +1,9 @@
 {
-  "name": "edtss",
+  "name": "redts",
   "version": "0.1.0",
   "type": "module",
   "main": "./build/index.js",
-  "repository": "git@github.com:lolPants/edtss.git",
+  "repository": "git@github.com:lolPants/redts.git",
   "author": "Jack Baron <jackmbaron@gmail.com>",
   "license": "MIT",
   "private": true,
