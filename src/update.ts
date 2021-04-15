@@ -25,7 +25,7 @@ export const syncDB = async (boot: boolean) => {
   }
 
   try {
-    const job = execa('python', ['./edts/update.py'], {
+    const job = execa('python3', ['./edts/update.py'], {
       all: true,
       buffer: false,
     })
