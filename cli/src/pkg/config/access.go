@@ -6,7 +6,7 @@ import (
 )
 
 func (c *Config) getField(name string) *reflect.Value {
-	t := reflect.ValueOf(*c)
+	t := reflect.ValueOf(c).Elem()
 
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Type().Field(i)
@@ -26,11 +26,20 @@ func (c *Config) HasField(name string) bool {
 	return field != nil
 }
 
-func (c *Config) GetField(name string) interface{} {
+func (c *Config) GetField(name string) string {
 	field := c.getField(name)
 	if field == nil {
 		panic(errors.New("field cannot be nil"))
 	}
 
-	return field.Interface()
+	return field.Interface().(string)
+}
+
+func (c *Config) SetField(name string, value string) {
+	field := c.getField(name)
+	if field == nil {
+		panic(errors.New("field cannot be nil"))
+	}
+
+	field.SetString(value)
 }

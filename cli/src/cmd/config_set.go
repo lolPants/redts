@@ -17,38 +17,25 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			key := strings.ToLower(args[0])
 			value := args[1]
-
-			modified := false
 			cfg := config.Load()
 
-			if key == "url" {
-				value := strings.TrimSuffix(value, "/")
-				cfg.URL = value
-
-				modified = true
-			}
-
-			if key == "username" {
-				cfg.Username = value
-				modified = true
-			}
-
-			if key == "token" {
-				cfg.Token = value
-				modified = true
-			}
-
-			if modified {
-				err := cfg.Save()
-				if err != nil {
-					panic(err)
-				}
+			validKey := cfg.HasField(key)
+			if !validKey {
+				fmt.Fprintf(os.Stderr, "error: invalid config key `%s`\n", key)
+				os.Exit(1)
 
 				return
 			}
 
-			fmt.Fprintf(os.Stderr, "error: invalid config key `%s`\n", key)
-			os.Exit(1)
+			if key == "url" {
+				value = strings.TrimSuffix(value, "/")
+			}
+
+			cfg.SetField(key, value)
+			err := cfg.Save()
+			if err != nil {
+				panic(err)
+			}
 		},
 	}
 )
