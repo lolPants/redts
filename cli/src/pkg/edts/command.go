@@ -15,9 +15,17 @@ func RunCommand(script string, args []string) {
 
 	var parsedArgs strings.Builder
 	for i, arg := range args {
-		parsedArgs.WriteRune('"')
+		hasSpace := strings.ContainsRune(arg, ' ')
+
+		if hasSpace {
+			parsedArgs.WriteRune('"')
+		}
+
 		parsedArgs.WriteString(arg)
-		parsedArgs.WriteRune('"')
+
+		if hasSpace {
+			parsedArgs.WriteRune('"')
+		}
 
 		if i+1 != len(args) {
 			parsedArgs.WriteRune(' ')
