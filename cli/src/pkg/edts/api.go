@@ -44,6 +44,10 @@ func callAPI(cfg *config.Config, script string, args string) error {
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
 	fmt.Printf("%s\n", body)
 
 	if resp.StatusCode != http.StatusOK {
