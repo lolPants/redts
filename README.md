@@ -4,6 +4,8 @@
 ## ❓ What is rEDTS
 rEDTS, or Remote EDTS, is a system for running an EDTS instance on a remote server. This has the advantage of only requiring one database for many users, and outsourcing CPU time to an external system.
 
+**This is mostly a personal project, very minimal help will be given. Use at your own discretion.**
+
 ## 📡 Server
 The server runs EDTS in the background with a simple Node.js HTTP API wrapper. It is deployed using the provided [Docker Images](https://github.com/lolPants/redts/packages/733073).
 
