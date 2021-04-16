@@ -10,7 +10,7 @@ import (
 	"github.com/lolPants/redts/cli/src/pkg/config"
 )
 
-func CallAPI(cfg *config.Config, script string, args string) error {
+func callAPI(cfg *config.Config, script string, args string) error {
 	url := fmt.Sprintf("%s/%s", cfg.URL, script)
 	req, err := http.NewRequest("GET", url, strings.NewReader(args))
 	if err != nil {
