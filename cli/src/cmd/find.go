@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	edtsCmd = &cobra.Command{
-		Use:                "edts",
-		Short:              "finds the optimal order to visit a set of stations, and can produce full routes between systems",
+	findCmd = &cobra.Command{
+		Use:                "find",
+		Short:              "searches for systems and stations by name, including wildcards",
 		Args:               cobra.ArbitraryArgs,
 		DisableFlagParsing: true,
 		Run: func(cmd *cobra.Command, args []string) {
@@ -18,5 +18,5 @@ var (
 )
 
 func init() {
-	rootCmd.AddCommand(edtsCmd)
+	rootCmd.AddCommand(findCmd)
 }
