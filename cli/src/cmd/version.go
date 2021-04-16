@@ -7,11 +7,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	sha1ver = "unknown"
-	gitTag  string
-)
-
 type versionRow struct {
 	label string
 	value string

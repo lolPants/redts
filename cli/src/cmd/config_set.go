@@ -22,12 +22,9 @@ var (
 			cfg := config.Load()
 
 			if key == "url" {
-				suffix := "/"
-				if strings.HasSuffix(value, suffix) {
-					value = value[:len(value)-len(suffix)]
-				}
-
+				value := strings.TrimSuffix(value, "/")
 				cfg.URL = value
+
 				modified = true
 			}
 
