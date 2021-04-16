@@ -1,7 +1,7 @@
 package config
 
 type Config struct {
-	URL      string `toml:"url"`
-	Username string `toml:"username"`
-	Token    string `toml:"token"`
+	URL      string `config:"url" toml:"url"`
+	Username string `config:"username" toml:"username"`
+	Token    string `config:"token" toml:"token"`
 }

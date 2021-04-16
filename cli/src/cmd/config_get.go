@@ -18,38 +18,16 @@ var (
 			key := strings.ToLower(args[0])
 			cfg := config.Load()
 
-			if key == "url" {
-				if cfg.URL == "" {
-					fmt.Fprintln(os.Stderr, "error: url is unset")
-					os.Exit(1)
-				}
+			validKey := cfg.HasField(key)
+			if !validKey {
+				fmt.Fprintf(os.Stderr, "error: invalid config key `%s`\n", key)
+				os.Exit(1)
 
-				fmt.Printf("%s\n", cfg.URL)
 				return
 			}
 
-			if key == "username" {
-				if cfg.URL == "" {
-					fmt.Fprintln(os.Stderr, "error: username is unset")
-					os.Exit(1)
-				}
-
-				fmt.Printf("%s\n", cfg.Username)
-				return
-			}
-
-			if key == "token" {
-				if cfg.URL == "" {
-					fmt.Fprintln(os.Stderr, "error: token is unset")
-					os.Exit(1)
-				}
-
-				fmt.Printf("%s\n", cfg.Token)
-				return
-			}
-
-			fmt.Fprintf(os.Stderr, "error: invalid config key `%s`\n", key)
-			os.Exit(1)
+			value := cfg.GetField(key)
+			fmt.Println(value)
 		},
 	}
 )
