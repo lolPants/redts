@@ -36,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: redts.exe
-          path: target/x86_64-pc-windows-gnu/release/redts_cli.exe
+          path: ./cli/target/x86_64-pc-windows-gnu/release/redts_cli.exe
