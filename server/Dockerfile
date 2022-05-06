@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.2
 FROM alpine as edts
-ENV EDTS_COMMIT=fce284e2d6973f65937c586f29393d2323766366
+ENV EDTS_COMMIT=e65543b8779e2c164dc1bff6e03f0286cc89e611
 
 WORKDIR /edts
 RUN apk add --no-cache git
