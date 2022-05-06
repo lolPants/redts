@@ -1,4 +1,5 @@
 import { config } from 'dotenv'
+import process from 'node:process'
 
 // Load from .env
 config()

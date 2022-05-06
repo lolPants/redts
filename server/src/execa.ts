@@ -4,7 +4,7 @@ export function isExecaError(object: unknown): object is ExecaError {
   if (typeof object !== 'object') return false
   if (object === null) return false
 
-  // @ts-expect-error
+  // @ts-expect-error Type Assertion
   const record: Record<string, unknown> = object
   if ('shortMessage' in record === false) return false
   if ('command' in record === false) return false

@@ -1,5 +1,6 @@
 import { field } from '@lolpants/jogger'
 import { execa } from 'execa'
+import { type Buffer } from 'node:buffer'
 import fs from 'node:fs'
 import type { PathLike } from 'node:fs'
 import { access } from 'node:fs/promises'
@@ -10,7 +11,7 @@ export const exists = async (path: PathLike) => {
     await access(path, fs.constants.F_OK)
     return true
   } catch (error: unknown) {
-    // @ts-expect-error
+    // @ts-expect-error Error Code Check
     if (error instanceof Error && error.code === 'ENOENT') return false
     throw error
   }

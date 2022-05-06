@@ -18,7 +18,7 @@ type AllowedScript = typeof ALLOWED_SCRIPTS[number]
 
 export const resolveScript = (string: string) => string.replace(/-/g, '_')
 export function isScript(string: string): string is AllowedScript {
-  // @ts-expect-error
+  // @ts-expect-error Type Assertion
   return ALLOWED_SCRIPTS.includes(string)
 }
 // #endregion
