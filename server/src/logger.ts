@@ -4,7 +4,7 @@ import {
   createLogger,
   field,
 } from '@lolpants/jogger'
-import type { IField } from '@lolpants/jogger'
+import type { Field } from '@lolpants/jogger'
 import type { Middleware } from 'koa'
 import { ENABLE_LOGGING, HMAC_SECRET, IS_DEV } from './env/index.js'
 
@@ -19,8 +19,8 @@ export const logger = wrapLogger('app')
 
 export const errorField: <T extends Error>(
   error: T
-) => Readonly<IField> = error => {
-  const array: Array<Readonly<IField>> = [
+) => Readonly<Field> = error => {
+  const array: Array<Readonly<Field>> = [
     field('type', error.name),
     field('message', error.message),
   ]
@@ -57,7 +57,7 @@ export const middleware: Middleware = async (ctx, next) => {
       referrerField(ctx.headers.referer ?? ctx.headers.referrer ?? '-'),
     ] as const
 
-    const extraFields: IField[] = []
+    const extraFields: Field[] = []
 
     if (HMAC_SECRET !== undefined) {
       const { authorization } = ctx.request.headers

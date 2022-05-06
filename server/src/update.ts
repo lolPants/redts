@@ -1,5 +1,5 @@
 import { field } from '@lolpants/jogger'
-import execa from 'execa'
+import { execa } from 'execa'
 import fs from 'node:fs'
 import type { PathLike } from 'node:fs'
 import { access } from 'node:fs/promises'

@@ -1,4 +1,4 @@
-import execa from 'execa'
+import { execa } from 'execa'
 import { SCRIPT_TIMEOUT } from './env/index.js'
 import { isExecaError } from './execa.js'
 
