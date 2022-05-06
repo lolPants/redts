@@ -1,8 +1,18 @@
 # EDTS Application
 edts
 
-# Node Server
+# Dependencies
 node_modules
+jspm_packages
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Node Server
 .vscode
 build
 logs
