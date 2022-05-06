@@ -35,6 +35,7 @@
     "koa-body": "^5.0.0",
     "node-schedule": "^2.1.0",
     "shlex": "^2.1.0",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "tslib": "^2.4.0"
   }
 }
