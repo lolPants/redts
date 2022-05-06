@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1.2
+FROM node:16-alpine as node-base
 FROM alpine as edts
 ENV EDTS_COMMIT=e65543b8779e2c164dc1bff6e03f0286cc89e611
 
@@ -10,7 +11,7 @@ RUN rm .gitignore README.md
 RUN rm -rf .git doc test
 
 # ---
-FROM node:14-alpine AS deps-common
+FROM node-base AS deps-common
 
 WORKDIR /app
 COPY ./package.json ./yarn.lock ./
@@ -26,7 +27,7 @@ RUN yarn install --production=true --frozen-lockfile && \
   yarn cache clean
 
 # ---
-FROM node:14-alpine AS builder
+FROM node-base AS builder
 WORKDIR /app
 
 COPY . .
@@ -34,7 +35,7 @@ COPY --from=deps-dev /app/node_modules ./node_modules
 RUN yarn build
 
 # ---
-FROM node:14-alpine AS runner
+FROM node-base AS runner
 
 WORKDIR /app
 ENV NODE_ENV production
