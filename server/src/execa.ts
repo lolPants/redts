@@ -1,4 +1,4 @@
-import type { ExecaError } from 'execa'
+import { type ExecaError } from 'execa'
 
 export function isExecaError(object: unknown): object is ExecaError {
   if (typeof object !== 'object') return false

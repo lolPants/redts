@@ -3,9 +3,9 @@ import {
   createField,
   createLogger,
   field,
+  type Field,
 } from '@lolpants/jogger'
-import type { Field } from '@lolpants/jogger'
-import type { Middleware } from 'koa'
+import { type Middleware } from 'koa'
 import { ENABLE_LOGGING, HMAC_SECRET, IS_DEV } from './env/index.js'
 
 export const wrapLogger = (name: string) =>

@@ -1,5 +1,5 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes'
-import type { Middleware } from 'koa'
+import { type Middleware } from 'koa'
 import { createHmac } from 'node:crypto'
 import { HMAC_SECRET } from './env/index.js'
 

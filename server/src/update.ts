@@ -1,8 +1,7 @@
 import { field } from '@lolpants/jogger'
 import { execa } from 'execa'
 import { type Buffer } from 'node:buffer'
-import fs from 'node:fs'
-import type { PathLike } from 'node:fs'
+import fs, { type PathLike } from 'node:fs'
 import { access } from 'node:fs/promises'
 import { errorField, wrapLogger } from './logger.js'
 
