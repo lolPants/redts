@@ -34,7 +34,9 @@
 
 use clap::Parser;
 use color_eyre::Result;
+use config::Config;
 use once_cell::sync::Lazy;
+use tracing::error;
 use tracing_error::ErrorLayer;
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::{fmt, EnvFilter};
@@ -65,7 +67,11 @@ struct Args {
 #[derive(Debug, Parser)]
 enum Subcommand {
     /// Finds systems close to others, optionally with constraints
-    CloseTo,
+    #[clap(trailing_var_arg = true)]
+    CloseTo {
+        #[clap(multiple_values = true)]
+        args: Vec<String>,
+    },
 
     /// Get / set config keys
     Config {
@@ -127,5 +133,18 @@ fn main() -> Result<()> {
         .with(ErrorLayer::default())
         .init();
 
+    let home_dir = match dirs::home_dir() {
+        Some(dir) => dir,
+
+        None => {
+            error!("Failed to resolve your home directory!");
+            std::process::exit(1);
+        }
+    };
+
+    let config_path = home_dir.join(".config").join("redts.toml");
+    let mut config = Config::load_path(&config_path)?;
+
+    config.save()?;
     Ok(())
 }
