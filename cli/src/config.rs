@@ -4,23 +4,43 @@ use std::path::{Path, PathBuf};
 use color_eyre::Result;
 use paste::paste;
 use serde::{Deserialize, Serialize};
-use strum_macros::EnumString;
+use strum_macros::{Display, EnumString};
 
 macro_rules! define_config {
-    (pub struct $name:ident { $($fname:ident : $ftype:ty),* }) => {
+    (pub struct $name:ident { $($fname:ident),* }) => {
         paste! {
             #[derive(Debug, Default, Deserialize, Serialize)]
             pub struct $name {
                 #[serde(skip)]
                 file_path: PathBuf,
 
-                $($fname : $ftype),*
+                pub $($fname: Option<String>),*
             }
 
-            #[derive(Debug, EnumString)]
+            #[derive(Debug, Display, EnumString)]
             #[strum(serialize_all = "snake_case")]
             pub enum [<$name Key>] {
                 $([<$fname:camel>]),*
+            }
+
+            impl $name {
+                #[inline(always)]
+                pub fn get_value(&self, key: &[<$name Key>]) -> Option<&str> {
+                    match key {
+                        $(
+                            ConfigKey::[<$fname:camel>] => self.$fname.as_deref(),
+                        )*
+                    }
+                }
+
+                #[inline(always)]
+                pub fn set_value(&mut self, key: &[<$name Key>], value: Option<String>) {
+                    match key {
+                        $(
+                            ConfigKey::[<$fname:camel>] => self.$fname = value,
+                        )*
+                    }
+                }
             }
         }
     }
@@ -28,9 +48,9 @@ macro_rules! define_config {
 
 define_config! {
     pub struct Config {
-        url: Option<String>,
-        username: Option<String>,
-        token: Option<String>
+        url,
+        username,
+        token
     }
 }
 
