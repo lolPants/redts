@@ -14,7 +14,7 @@ macro_rules! define_config {
                 #[serde(skip)]
                 file_path: PathBuf,
 
-                pub $($fname: Option<String>),*
+                $(pub $fname: Option<String>),*
             }
 
             #[derive(Debug, Display, EnumString)]
