@@ -41,9 +41,9 @@ use tracing_error::ErrorLayer;
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::{fmt, EnvFilter};
 
+mod api;
 mod cmd;
 mod config;
-mod http;
 
 pub static VERSION: Lazy<String> = Lazy::new(|| {
     let mut version = format!("v{}", env!("CARGO_PKG_VERSION"));
