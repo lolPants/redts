@@ -35,7 +35,9 @@
 use clap::Parser;
 use once_cell::sync::Lazy;
 
-static VERSION: Lazy<String> = Lazy::new(|| {
+mod http;
+
+pub static VERSION: Lazy<String> = Lazy::new(|| {
     let mut version = format!("v{}", env!("CARGO_PKG_VERSION"));
     if let Some(hash) = option_env!("GIT_SHORT_HASH") {
         version += &format!(" ({})", hash);
