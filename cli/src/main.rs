@@ -35,6 +35,7 @@
 use clap::Parser;
 use once_cell::sync::Lazy;
 
+mod config;
 mod http;
 
 pub static VERSION: Lazy<String> = Lazy::new(|| {
