@@ -81,22 +81,40 @@ enum Subcommand {
     },
 
     /// Returns the coordinates of given systems
-    Coords,
+    Coords {
+        #[clap(multiple_values = true)]
+        args: Vec<String>,
+    },
 
     /// Finds the distance between two or more systems
-    Distance,
+    Distance {
+        #[clap(multiple_values = true)]
+        args: Vec<String>,
+    },
 
     /// Finds the optimal order to visit a set of stations, and can produce full routes between systems
-    Edts,
+    Edts {
+        #[clap(multiple_values = true)]
+        args: Vec<String>,
+    },
 
     /// Searches for systems and stations by name, including wildcards
-    Find,
+    Find {
+        #[clap(multiple_values = true)]
+        args: Vec<String>,
+    },
 
     /// Determines the amount of fuel used by a series of jumps
-    FuelUsage,
+    FuelUsage {
+        #[clap(multiple_values = true)]
+        args: Vec<String>,
+    },
 
     /// Gives an estimate of good plot distances in the galactic core
-    Galmath,
+    Galmath {
+        #[clap(multiple_values = true)]
+        args: Vec<String>,
+    },
 }
 
 #[derive(Debug, Parser)]
@@ -152,13 +170,13 @@ fn main() -> Result<()> {
             ConfigSubcommand::Set { key, value } => cmd::config_set(&mut config, key, value)?,
         },
 
-        Subcommand::CloseTo { args } => api::call_api(&config, "close_to", "--help".into())?, // TODO: Args
-        Subcommand::Coords => api::call_api(&config, "coords", "--help".into())?, // TODO: Args
-        Subcommand::Distance => api::call_api(&config, "distance", "--help".into())?, // TODO: Args
-        Subcommand::Edts => api::call_api(&config, "edts", "--help".into())?,     // TODO: Args
-        Subcommand::Find => api::call_api(&config, "find", "--help".into())?,     // TODO: Args
-        Subcommand::FuelUsage => api::call_api(&config, "fuel_usage", "--help".into())?, // TODO: Args
-        Subcommand::Galmath => api::call_api(&config, "galmath", "--help".into())?, // TODO: Args
+        Subcommand::CloseTo { args } => api::call_api(&config, "close_to", args)?,
+        Subcommand::Coords { args } => api::call_api(&config, "coords", args)?,
+        Subcommand::Distance { args } => api::call_api(&config, "distance", args)?,
+        Subcommand::Edts { args } => api::call_api(&config, "edts", args)?,
+        Subcommand::Find { args } => api::call_api(&config, "find", args)?,
+        Subcommand::FuelUsage { args } => api::call_api(&config, "fuel_usage", args)?,
+        Subcommand::Galmath { args } => api::call_api(&config, "galmath", args)?,
     }
 
     config.save()?;

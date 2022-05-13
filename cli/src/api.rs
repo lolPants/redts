@@ -15,7 +15,7 @@ static CLIENT: Lazy<Client> = Lazy::new(|| {
         .unwrap()
 });
 
-pub fn call_api(config: &Config, script: &'static str, args: String) -> Result<()> {
+pub fn call_api(config: &Config, script: &'static str, args: Vec<String>) -> Result<()> {
     if config.username.is_some() && config.token.is_none() {}
 
     let url = match &config.url {
@@ -32,7 +32,7 @@ pub fn call_api(config: &Config, script: &'static str, args: String) -> Result<(
     let mut request = CLIENT
         .get(url)
         .header("Content-Type", "text/plain")
-        .body(args);
+        .body(args.join(" "));
 
     if let Some(username) = config.username.as_deref() {
         if config.token.is_none() {
