@@ -33,7 +33,11 @@
 )]
 
 use clap::Parser;
+use color_eyre::Result;
 use once_cell::sync::Lazy;
+use tracing_error::ErrorLayer;
+use tracing_subscriber::prelude::*;
+use tracing_subscriber::{fmt, EnvFilter};
 
 mod config;
 mod http;
@@ -87,7 +91,30 @@ enum ConfigSubcommand {
     Set,
 }
 
-fn main() {
-    let subcommand = Subcommand::parse();
-    dbg!(subcommand);
+fn main() -> Result<()> {
+    color_eyre::install()?;
+
+    let verbose = todo!();
+    let filter = match verbose {
+        #[cfg(debug_assertions)]
+        0 | 1 | 2 => format!("{}=debug", env!("CARGO_PKG_NAME")),
+
+        #[cfg(not(debug_assertions))]
+        0 => format!("{}=info", env!("CARGO_PKG_NAME")),
+        #[cfg(not(debug_assertions))]
+        1 | 2 => format!("{}=debug", env!("CARGO_PKG_NAME")),
+
+        3 => format!("{}=trace", env!("CARGO_PKG_NAME")),
+        _ => "trace".into(),
+    };
+
+    let filter = EnvFilter::new(filter);
+    let fmt = fmt::layer().with_target(verbose >= 2);
+    tracing_subscriber::registry()
+        .with(filter)
+        .with(fmt)
+        .with(ErrorLayer::default())
+        .init();
+
+    Ok(())
 }
