@@ -53,6 +53,16 @@ pub static VERSION: Lazy<String> = Lazy::new(|| {
 
 #[derive(Debug, Parser)]
 #[clap(version = &VERSION[..], about, rename_all = "snake_case")]
+struct Args {
+    /// Verbosity level
+    #[clap(short, long, parse(from_occurrences))]
+    verbose: u8,
+
+    #[clap(subcommand)]
+    subcommand: Subcommand,
+}
+
+#[derive(Debug, Parser)]
 enum Subcommand {
     /// Finds systems close to others, optionally with constraints
     CloseTo,
@@ -93,8 +103,9 @@ enum ConfigSubcommand {
 
 fn main() -> Result<()> {
     color_eyre::install()?;
+    let args = Args::parse();
 
-    let verbose = todo!();
+    let verbose = args.verbose;
     let filter = match verbose {
         #[cfg(debug_assertions)]
         0 | 1 | 2 => format!("{}=debug", env!("CARGO_PKG_NAME")),
