@@ -47,13 +47,19 @@ pub fn call_api(config: &Config, script: &'static str, args: Vec<String>) -> Res
     }
 
     let resp = request.send()?;
-    if resp.status() == StatusCode::UNAUTHORIZED {
+    let status = resp.status();
+    if status == StatusCode::UNAUTHORIZED {
         error!("invalid credentials");
         std::process::exit(1);
     }
 
-    let body = resp.error_for_status()?.text()?;
+    let body = resp.text()?;
     println!("{body}");
+
+    let is_error = status.is_client_error() || status.is_server_error();
+    if is_error {
+        std::process::exit(1);
+    }
 
     Ok(())
 }
