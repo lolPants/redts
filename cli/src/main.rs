@@ -34,13 +34,14 @@
 
 use clap::Parser;
 use color_eyre::Result;
-use config::Config;
+use config::{Config, ConfigKey};
 use once_cell::sync::Lazy;
 use tracing::error;
 use tracing_error::ErrorLayer;
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::{fmt, EnvFilter};
 
+mod cmd;
 mod config;
 mod http;
 
@@ -101,10 +102,10 @@ enum Subcommand {
 #[derive(Debug, Parser)]
 enum ConfigSubcommand {
     /// Get config key
-    Get,
+    Get { key: ConfigKey },
 
-    /// Set config key value
-    Set,
+    /// Set config key to value
+    Set { key: ConfigKey, value: String },
 }
 
 fn main() -> Result<()> {
@@ -144,6 +145,22 @@ fn main() -> Result<()> {
 
     let config_path = home_dir.join(".config").join("redts.toml");
     let mut config = Config::load_path(&config_path)?;
+    config.url = Some("abc".into());
+
+    match args.subcommand {
+        Subcommand::Config { subcommand } => match subcommand {
+            ConfigSubcommand::Get { key } => cmd::config_get(&config, key)?,
+            ConfigSubcommand::Set { key, value } => cmd::config_set(&mut config, key, value)?,
+        },
+
+        Subcommand::CloseTo { args } => todo!(),
+        Subcommand::Coords => todo!(),
+        Subcommand::Distance => todo!(),
+        Subcommand::Edts => todo!(),
+        Subcommand::Find => todo!(),
+        Subcommand::FuelUsage => todo!(),
+        Subcommand::Galmath => todo!(),
+    }
 
     config.save()?;
     Ok(())
