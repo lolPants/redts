@@ -2,24 +2,39 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use color_eyre::Result;
+use paste::paste;
 use serde::{Deserialize, Serialize};
+use strum_macros::EnumString;
 
-#[derive(Debug, Default, Deserialize, Serialize)]
-struct Config {
-    #[serde(skip)]
-    file_path: PathBuf,
+macro_rules! define_config {
+    (pub struct $name:ident { $($fname:ident : $ftype:ty),* }) => {
+        paste! {
+            #[derive(Debug, Default, Deserialize, Serialize)]
+            pub struct $name {
+                #[serde(skip)]
+                file_path: PathBuf,
 
-    pub url: Option<String>,
-    pub username: Option<String>,
-    pub token: Option<String>,
+                $($fname : $ftype),*
+            }
+
+            #[derive(Debug, EnumString)]
+            #[strum(serialize_all = "snake_case")]
+            pub enum [<$name Key>] {
+                $([<$fname:camel>]),*
+            }
+        }
+    }
+}
+
+define_config! {
+    pub struct Config {
+        url: Option<String>,
+        username: Option<String>,
+        token: Option<String>
+    }
 }
 
 impl Config {
-    #[inline(always)]
-    pub fn load(&self) -> Result<Self> {
-        Self::load_path(&self.file_path)
-    }
-
     pub fn load_path(path: &Path) -> Result<Self> {
         if !path.exists() {
             let config = Config {
