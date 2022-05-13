@@ -152,13 +152,13 @@ fn main() -> Result<()> {
             ConfigSubcommand::Set { key, value } => cmd::config_set(&mut config, key, value)?,
         },
 
-        Subcommand::CloseTo { args } => todo!(),
-        Subcommand::Coords => todo!(),
-        Subcommand::Distance => todo!(),
-        Subcommand::Edts => todo!(),
-        Subcommand::Find => todo!(),
-        Subcommand::FuelUsage => todo!(),
-        Subcommand::Galmath => todo!(),
+        Subcommand::CloseTo { args } => api::call_api(&config, "close_to", "--help".into())?, // TODO: Args
+        Subcommand::Coords => api::call_api(&config, "coords", "--help".into())?, // TODO: Args
+        Subcommand::Distance => api::call_api(&config, "distance", "--help".into())?, // TODO: Args
+        Subcommand::Edts => api::call_api(&config, "edts", "--help".into())?,     // TODO: Args
+        Subcommand::Find => api::call_api(&config, "find", "--help".into())?,     // TODO: Args
+        Subcommand::FuelUsage => api::call_api(&config, "fuel_usage", "--help".into())?, // TODO: Args
+        Subcommand::Galmath => api::call_api(&config, "galmath", "--help".into())?, // TODO: Args
     }
 
     config.save()?;
