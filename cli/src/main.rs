@@ -145,7 +145,6 @@ fn main() -> Result<()> {
 
     let config_path = home_dir.join(".config").join("redts.toml");
     let mut config = Config::load_path(&config_path)?;
-    config.url = Some("abc".into());
 
     match args.subcommand {
         Subcommand::Config { subcommand } => match subcommand {
